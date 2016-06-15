@@ -31,8 +31,8 @@ rap device add <device-id>
 Here is the basic usage of this driver.
 
 ```js
-$('#<device-id>').turnOn(callback);
-$('#<device-id>').turnOff(callback);
+$('#<device-id>').turnOn([callback]);
+$('#<device-id>').turnOff([callback]);
 $('#<device-id>').isOn(callback);
 ```
 
@@ -40,19 +40,26 @@ $('#<device-id>').isOn(callback);
 
 ### Methods
 
-#### `turnOn(callback)`
+#### `turnOn([callback])`
 
 Turn on the buzzer.
 
-- **callback:** the callback
+- **callback:** No arguments other than a possible exception are given to the completion callback.
 
-#### `turnOff(callback)`
+#### `turnOff([callback])`
 
 Turn off the buzzer.
 
-- **callback:** the callback
+- **callback:** No arguments other than a possible exception are given to the completion callback.
 
-## Contributing
+#### `isOn(callback)`
+
+Get the working state of the buzzer.
+
+- **callback:** The callback gets two arguments `(error, state)` where `state` is boolean.
+when `state` is true, the buzzer is turned on, otherwise, is turned off.
+
+## Contributin
 
 Contributions to this project are warmly welcome. But before you open a pull request, please make sure your changes are passing code linting and tests.
 
