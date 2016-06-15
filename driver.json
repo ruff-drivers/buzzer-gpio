@@ -7,7 +7,8 @@
         "gpio": {
             "type": "gpio",
             "args": {
-                "direction": "out_high"
+                "direction": "out",
+                "level": "low"
             }
         }
     }

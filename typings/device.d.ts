@@ -1,19 +1,21 @@
 export declare class Buzzer extends RuffDevice {
     /**
-     * Turn on the Buzzer
+     * Turn on the Buzzer.
+     * @param callback - The callback.
      */
-    turnOn(): void;
+    turnOn(callback: (error : Error) => void): void;
 
     /**
      * Turn off the Buzzer.
+     * @param callback - The callback.
      */
-    turnOff(): void;
+    turnOff(callback: (error : Error) => void): void;
 
     /**
      * Get the working state of the Buzzer
-     * @returns ture means the Buzzer is on, false means the Buzzer is off.
+     * @param callback - The callback.
      */
-    isOn(): boolean;
+    isOn(callback: (error: Error, state: boolean) => void): void;
 }
 
 export default Buzzer;

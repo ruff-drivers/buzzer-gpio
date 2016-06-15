@@ -31,22 +31,26 @@ rap device add <device-id>
 Here is the basic usage of this driver.
 
 ```js
-$('#<device-id>').turnOn();
-$('#<device-id>').turnOff();
-$('#<device-id>').isOn();
+$('#<device-id>').turnOn(callback);
+$('#<device-id>').turnOff(callback);
+$('#<device-id>').isOn(callback);
 ```
 
 ## API References
 
 ### Methods
 
-#### `turnOn()`
+#### `turnOn(callback)`
 
 Turn on the buzzer.
 
-#### `turnOff()`
+- **callback:** the callback
+
+#### `turnOff(callback)`
 
 Turn off the buzzer.
+
+- **callback:** the callback
 
 ## Contributing
 

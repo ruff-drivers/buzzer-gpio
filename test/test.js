@@ -5,7 +5,7 @@ var path = require('path');
 var mock = require('ruff-mock');
 
 var when = mock.when;
-var verify = mock.verify;
+var any = mock.any;
 
 var driverPath = path.join(__dirname, '..');
 var runner = require('ruff-driver-runner');
@@ -24,18 +24,41 @@ describe('Buzzer Driver', function () {
         });
     });
 
-    it('shoule gpio write 1 when realy turn on', function () {
-        buzzer.turnOn();
-        verify(gpio).write(1);
+    it('shoule gpio write 1 when realy turn on', function (done) {
+        when(gpio).write(1, callback).then(function () {
+            callback();
+        });
+
+        buzzer.turnOn(callback);
+
+        function callback() {
+            done();
+        }
     });
 
-    it('shoule gpio write 0 when realy turn off', function () {
-        buzzer.turnOff();
-        verify(gpio).write(0);
+    it('shoule gpio write 0 when realy turn off', function (done) {
+        when(gpio).write(0, callback).then(function () {
+            callback();
+        });
+
+        buzzer.turnOff(callback);
+
+        function callback() {
+            done();
+        }
     });
 
-    it('should isOn when gpio read 0', function () {
-        when(gpio).read().thenReturn(1);
-        assert(buzzer.isOn());
+    it('should isOn when gpio read 1', function (done) {
+        when(gpio).read(any()).then(function () {
+            callback(undefined, 1);
+        });
+
+        buzzer.isOn(callback);
+
+        function callback(error, on) {
+            assert(!error);
+            assert(on);
+            done();
+        }
     });
 });

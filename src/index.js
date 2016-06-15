@@ -5,25 +5,30 @@
 
 'use strict';
 var driver = require('ruff-driver');
-var gpio = require('gpio');
 
 module.exports = driver({
     attach: function (inputs) {
         this._gpio = inputs.getRequired('gpio');
-        this._gpio.setDirection(gpio.OUT_LOW);
     },
 
     exports: {
-        turnOn: function () {
-            return this._gpio.write(1);
+        turnOn: function (callback) {
+            this._gpio.write(1, callback);
         },
-
-        turnOff: function () {
-            return this._gpio.write(0);
+        turnOff: function (callback) {
+            this._gpio.write(0, callback);
         },
+        isOn: function (callback) {
+            var readCallback = callback && function (error, value) {
+                if (error) {
+                    callback(error);
+                    return;
+                }
 
-        isOn: function () {
-            return this._gpio.read() === 1;
+                callback(undefined, !!value);
+            };
+
+            this._gpio.read(readCallback);
         }
     }
 });
