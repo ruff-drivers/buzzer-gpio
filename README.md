@@ -10,8 +10,8 @@ Buzzer driver with GPIO interface.
 
 ## Supported Models
 
-[FC-49](https://rap.ruff.io/devices/FC-49)
-[MF-FMG](https://rap.ruff.io/devices/MH-FMG)
+- [fc-49](https://rap.ruff.io/devices/fc-49)
+- [mh-fmg](https://rap.ruff.io/devices/mh-fmg)
 
 ## Installing
 
@@ -23,7 +23,7 @@ Execute following command and enter a **supported model** to install.
 rap device add <device-id>
 
 # Then enter a supported model, for example:
-# ? model: FC-49
+# ? model: fc-49
 ```
 
 ## Usage
@@ -31,9 +31,32 @@ rap device add <device-id>
 Here is the basic usage of this driver.
 
 ```js
-$('#<device-id>').turnOn([callback]);
-$('#<device-id>').turnOff([callback]);
-$('#<device-id>').isOn(callback);
+$('#<device-id>').turnOn(function (error) {
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    console.log('turned on');
+});
+
+$('#<device-id>').turnOff(function (error) {
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    console.log('turned off');
+});
+
+$('#<device-id>').isOn(function (error, on) {
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    console.log('status:', on ? 'on' : 'off');
+});
 ```
 
 ## API References
@@ -44,20 +67,19 @@ $('#<device-id>').isOn(callback);
 
 Turn on the buzzer.
 
-- **callback:** No arguments other than a possible exception are given to the completion callback.
+- **callback:** No argument other than a possible error is given to the completion callback.
 
 #### `turnOff([callback])`
 
 Turn off the buzzer.
 
-- **callback:** No arguments other than a possible exception are given to the completion callback.
+- **callback:** No argument other than a possible error is given to the completion callback.
 
 #### `isOn(callback)`
 
 Get the working state of the buzzer.
 
-- **callback:** The callback gets two arguments `(error, state)` where `state` is boolean.
-when `state` is true, the buzzer is turned on, otherwise, is turned off.
+- **callback:** The callback has two arguments `(error, on)` where `on` is boolean that indicates whether this buzzer is turned on.
 
 ## Contributin
 

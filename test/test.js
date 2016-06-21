@@ -1,14 +1,14 @@
 'use strict';
 
+var Level = require('gpio').Level;
 var assert = require('assert');
-var path = require('path');
 var mock = require('ruff-mock');
 
-var when = mock.when;
 var any = mock.any;
+var mockAny = mock.mockAny;
+var when = mock.when;
 
-var driverPath = path.join(__dirname, '..');
-var runner = require('ruff-driver-runner');
+var Device = require('../');
 
 require('t');
 
@@ -16,49 +16,46 @@ describe('Buzzer Driver', function () {
     var buzzer;
     var gpio;
 
-    before(function (done) {
-        runner.run(driverPath, function (device, context) {
-            buzzer = device;
-            gpio = context.arg('gpio');
-            done();
+    before(function () {
+        gpio = mockAny();
+        buzzer = new Device({
+            gpio: gpio
         });
     });
 
-    it('shoule gpio write 1 when realy turn on', function (done) {
-        when(gpio).write(1, callback).then(function () {
-            callback();
-        });
+    it('shoule gpio write `Level.high` when turn on', function (done) {
+        when(gpio)
+            .write(any, any)
+            .then(function (level, callback) {
+                assert.equal(level, Level.high);
+                callback();
+            });
 
-        buzzer.turnOn(callback);
-
-        function callback() {
-            done();
-        }
+        buzzer.turnOn(done);
     });
 
-    it('shoule gpio write 0 when realy turn off', function (done) {
-        when(gpio).write(0, callback).then(function () {
-            callback();
-        });
+    it('shoule gpio write `Level.low` when turn off', function (done) {
+        when(gpio)
+            .write(any, any)
+            .then(function (level, callback) {
+                assert.equal(level, Level.low);
+                callback();
+            });
 
-        buzzer.turnOff(callback);
-
-        function callback() {
-            done();
-        }
+        buzzer.turnOff(done);
     });
 
-    it('should isOn when gpio read 1', function (done) {
-        when(gpio).read(any()).then(function () {
-            callback(undefined, 1);
-        });
+    it('should have `isOn` called back with true when gpio read `Level.high`', function (done) {
+        when(gpio)
+            .read(any)
+            .then(function (callback) {
+                callback(undefined, Level.high);
+            });
 
-        buzzer.isOn(callback);
-
-        function callback(error, on) {
-            assert(!error);
-            assert(on);
+        buzzer.isOn(function (error, on) {
+            assert.ifError(error);
+            assert.strictEqual(on, true);
             done();
-        }
+        });
     });
 });
